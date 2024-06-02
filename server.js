@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import fetch from 'node-fetch';
+import cors from 'cors';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -11,7 +12,7 @@ const allowedOrigins = ['https://promo.jobmi.fr', 'https://jobmi.fr'];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+    if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -19,15 +20,17 @@ const corsOptions = {
   }
 };
 
-app.use(express.json());
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', allowedOrigins.join(','));
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
+app.use(cors(corsOptions));
+app.use(bodyParser.json());
 
 app.post('/subscribe', async (req, res) => {
   const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ message: 'Email is required' });
+  }
+
+  console.log(`Attempting to subscribe email: ${email}`);
 
   try {
     const response = await fetch('https://api.sendinblue.com/v3/contacts', {
@@ -43,6 +46,8 @@ app.post('/subscribe', async (req, res) => {
       })
     });
     const data = await response.json();
+
+    console.log('Response from Sendinblue:', data);
 
     if (!data.code) {
       res.json({ message: 'Inscription réussie!' });
