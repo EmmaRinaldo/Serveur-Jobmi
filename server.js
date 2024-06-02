@@ -8,19 +8,8 @@ dotenv.config();
 
 const app = express();
 
-const allowedOrigins = ['https://promo.jobmi.fr', 'https://jobmi.fr'];
-
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
-};
-
-app.use(cors(corsOptions));
+// Configuration CORS pour permettre toutes les origines
+app.use(cors());
 app.use(bodyParser.json());
 
 app.post('/subscribe', async (req, res) => {
@@ -45,6 +34,7 @@ app.post('/subscribe', async (req, res) => {
         updateEnabled: true
       })
     });
+
     const data = await response.json();
 
     console.log('Response from Sendinblue:', data);
