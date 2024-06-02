@@ -1,10 +1,30 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const fetch = require('node-fetch');
-require('dotenv').config();
+import express from 'express';
+import bodyParser from 'body-parser';
+import fetch from 'node-fetch';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
-app.use(bodyParser.json());
+
+const allowedOrigins = ['https://promo.jobmi.fr', 'https://jobmi.fr'];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+};
+
+app.use(express.json());
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', allowedOrigins.join(','));
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
 
 app.post('/subscribe', async (req, res) => {
   const { email } = req.body;
@@ -14,11 +34,11 @@ app.post('/subscribe', async (req, res) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'api-key': process.env.BREVO_API_KEY  // Utiliser la clé API depuis le .env
+        'api-key': process.env.BREVO_API_KEY
       },
       body: JSON.stringify({
         email: email,
-        listIds: [parseInt(process.env.LIST_ID, 10)],  // Utiliser l'ID de la liste depuis le .env
+        listIds: [parseInt(process.env.LIST_ID, 10)],
         updateEnabled: true
       })
     });
