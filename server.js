@@ -2,10 +2,15 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import dbRoutes from './routes/dbRoutes.js';
+import connectDB from './db.js';
+import articleRoutes from './routes/articleRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 import newsletterRoutes from './routes/newsletterRoutes.js';
 
 dotenv.config();
+
+// Connexion à MongoDB
+connectDB();
 
 const app = express();
 
@@ -14,7 +19,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Utilisation des routes
-app.use('/api/db', dbRoutes);
+app.use('/api/articles', articleRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 
 const PORT = process.env.PORT || 3000;
