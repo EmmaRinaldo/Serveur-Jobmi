@@ -74,3 +74,12 @@ export const deleteArticle = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+export const getCategories = async (req, res) => {
+  try {
+    const categories = await Article.distinct('category');
+    res.json(categories);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
