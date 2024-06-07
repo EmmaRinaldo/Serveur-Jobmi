@@ -9,6 +9,7 @@ export const registerUser = async (req, res) => {
     email,
     password,
     profileImage,
+    date: new Date()
   });
 
   try {
