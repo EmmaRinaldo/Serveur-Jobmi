@@ -4,7 +4,7 @@ import Comment from '../models/comment.js';
 // Get all articles
 export const getArticles = async (req, res) => {
   try {
-    const articles = await Article.find();
+    const articles = await Article.find().sort({ createdAt: -1 });
     res.json(articles);
   } catch (err) {
     res.status(500).json({ message: err.message });
