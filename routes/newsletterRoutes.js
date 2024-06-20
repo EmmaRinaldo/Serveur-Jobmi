@@ -31,7 +31,7 @@ router.post('/subscribe', async (req, res) => {
     console.log('Response from Sendinblue:', data);
 
     if (!data.code) {
-      res.json({ message: 'Inscription réussie!' });
+      console.log('Enregistrement réussit');
     } else {
       res.status(400).json({ message: 'Erreur: ' + data.message });
     }
