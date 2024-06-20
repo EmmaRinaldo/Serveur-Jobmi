@@ -23,6 +23,7 @@ app.use('/api/articles', articleRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 
+
 // Route de test
 app.get('/', (req, res) => {
   res.send('API is running...');

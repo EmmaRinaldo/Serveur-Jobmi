@@ -27,59 +27,8 @@ export const getArticleById = async (req, res, next) => {
   next();
 };
 
-// Create an article
-export const createArticle = async (req, res) => {
-  const { title, content, author, tags, category, coverImage, excerpt, published } = req.body;
 
-  const article = new Article({
-    title,
-    content,
-    author,
-    tags,
-    category,
-    coverImage,
-    excerpt,
-    published
-  });
 
-  try {
-    const newArticle = await article.save();
-    res.status(201).json(newArticle);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
-
-// Update an article
-export const updateArticle = async (req, res) => {
-  const { title, content, author, tags, category, coverImage, excerpt, published } = req.body;
-
-  if (title != null) res.article.title = title;
-  if (content != null) res.article.content = content;
-  if (author != null) res.article.author = author;
-  if (tags != null) res.article.tags = tags;
-  if (category != null) res.article.category = category;
-  if (coverImage != null) res.article.coverImage = coverImage;
-  if (excerpt != null) res.article.excerpt = excerpt;
-  if (published != null) res.article.published = published;
-
-  try {
-    const updatedArticle = await res.article.save();
-    res.json(updatedArticle);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
-
-// Delete an article
-export const deleteArticle = async (req, res) => {
-  try {
-    await res.article.remove();
-    res.json({ message: 'Article supprimé' });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
 
 // Get categories
 export const getCategories = async (req, res) => {
@@ -126,3 +75,14 @@ export const getRelatedArticles = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Get the latest article
+export const getLatestArticle = async (req, res) => {
+  try {
+    const latestArticle = await Article.findOne().sort({ createdAt: -1 });
+    res.json(latestArticle);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
