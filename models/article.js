@@ -1,7 +1,6 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose';
 
-const articleSchema = new Schema({
+const articleSchema = new mongoose.Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
   author: { type: String, required: true },
@@ -12,8 +11,9 @@ const articleSchema = new Schema({
   readingTime: { type: Number, required: true },
   category: { type: String, required: true },
   createdAt: { type: Date, default: Date.now }
-});
+}, { timestamps: true });
+
 
 const Article = mongoose.model('Article', articleSchema);
 
-module.exports = Article;
+export default Article;
