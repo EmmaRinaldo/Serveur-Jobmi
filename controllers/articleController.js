@@ -28,6 +28,18 @@ export const getArticleById = async (req, res, next) => {
 };
 
 
+// Get an article by slug
+export const getArticleBySlug = async (req, res) => {
+  try {
+    const article = await Article.findOne({ slug: req.params.slug });
+    if (!article) {
+      return res.status(404).json({ message: 'Article non trouvé' });
+    }
+    res.json(article);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 
 // Get categories
