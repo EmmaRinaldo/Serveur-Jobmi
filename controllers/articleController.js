@@ -37,7 +37,7 @@ export const getArticleBySlug = async (req, res) => {
     }
     res.json(article);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: 'Erreur lors de la récupération de l\'article' });
   }
 };
 
