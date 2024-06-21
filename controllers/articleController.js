@@ -41,6 +41,17 @@ export const getArticleBySlug = async (req, res) => {
   }
 };
 
+// Get all article slugs
+export const getAllArticleSlugs = async (req, res) => {
+  try {
+    const articles = await Article.find().select('slug');
+    const slugs = articles.map(article => article.slug);
+    res.json(slugs);
+  } catch (err) {
+    res.status(500).json({ message: 'Erreur lors de la récupération des slugs' });
+  }
+};
+
 
 // Get categories
 export const getCategories = async (req, res) => {
