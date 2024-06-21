@@ -8,8 +8,10 @@ const articleSchema = new mongoose.Schema({
   metaDescription: { type: String, required: true },
   excerpt: { type: String, required: true },
   imageCover: { type: String, required: true },
+  imageAlt: { type: String, required: true },
   readingTime: { type: Number, required: true },
   category: { type: String, required: true },
+  tags: [{ type: String, required: true}],
   createdAt: { type: Date, default: Date.now }
 }, { timestamps: true });
 
