@@ -4,7 +4,7 @@ import Comment from '../models/comment.js';
 // Get all articles
 export const getArticles = async (req, res) => {
   try {
-    const articles = await Article.find().sort({ createdAt: -1 });
+    const articles = await Article.find().sort({ datePublished: -1 });
     res.json(articles);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -102,7 +102,7 @@ export const getRelatedArticles = async (req, res) => {
 // Get the latest article
 export const getLatestArticle = async (req, res) => {
   try {
-    const latestArticle = await Article.findOne().sort({ createdAt: -1 });
+    const latestArticle = await Article.findOne().sort({ datePublished: -1 });
     res.json(latestArticle);
   } catch (err) {
     res.status(500).json({ message: err.message });
