@@ -22,7 +22,8 @@ app.use(bodyParser.json());
 app.use('/api/articles', articleRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/newsletter', newsletterRoutes);
-
+app.use('/uploads', express.static('uploads'));
+app.use('/api/users', userRoutes);
 
 // Route de test
 app.get('/', (req, res) => {
