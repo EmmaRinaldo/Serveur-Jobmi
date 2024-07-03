@@ -70,31 +70,36 @@ export const loginUser = async (req, res) => {
 
 
 
-// Fonction de connexion via Google
+// Connexion Google de l'utilisateur
 export const googleSignIn = async (req, res) => {
+  const { email, googleId, name, picture } = req.body;
   try {
-    const { email, name, picture } = req.body;
-
-    // Vérifier si l'utilisateur existe déjà
     let user = await User.findOne({ email });
+
     if (!user) {
-      // Créer un nouvel utilisateur s'il n'existe pas
       user = new User({
         email,
-        username: name,
-        profilePicture: picture,
+        googleId,
+        firstName: name?.split(' ')[0] || '',
+        lastName: name?.split(' ')[1] || '',
+        city: '',
+        password: '',
+        phone: '',
+        job: '',
+        profilePicture: picture || ''
       });
 
       await user.save();
     }
 
-    // Retourner l'utilisateur
-    res.status(200).json(user);
+    res.status(200).json({ message: 'Connexion réussie', user });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: 'Erreur lors de la connexion via Google' });
+    res.status(500).json({ message: 'Erreur lors de la connexion Google' });
   }
 };
+
+
 
 
 
