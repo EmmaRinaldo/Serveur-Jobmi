@@ -4,8 +4,6 @@ import {
   getArticleById,
   getArticleBySlug,
   getCategories,
-  addComment,
-  getComments,
   getRelatedArticles,
   getLatestArticle,
   getAllArticleSlugs
@@ -19,8 +17,8 @@ router.get('/latest', getLatestArticle);
 router.get('/slug/:slug', getArticleBySlug);
 router.get('/slugs', getAllArticleSlugs);
 router.get('/:id', getArticleById, (req, res) => res.json(res.article));
-router.post('/:id/comments', addComment);
-router.get('/:id/comments', getComments);
 router.get('/related', getRelatedArticles);
+// router.post('/:id/comments', addComment);
+// router.get('/:id/comments', getComments);
 
 export default router;
