@@ -115,3 +115,25 @@ export const getUserByEmail = async (req, res) => {
     res.status(500).json({ message: 'Erreur lors de la récupération des informations de l\'utilisateur' });
   }
 };
+
+// Mise à jour des informations de l'utilisateur
+export const updateUser = async (req, res) => {
+  const { email } = req.params;
+  const { firstName, lastName, city, phone, job, profilePicture } = req.body;
+  try {
+    const user = await User.findOneAndUpdate(
+      { email },
+      { firstName, lastName, city, phone, job, profilePicture },
+      { new: true }
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: 'Utilisateur non trouvé' });
+    }
+
+    res.status(200).json({ message: 'Informations mises à jour', user });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: 'Erreur lors de la mise à jour des informations' });
+  }
+};

@@ -7,5 +7,6 @@ router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/google-signin', googleSignIn);
 router.get('/:email', getUserByEmail);
+router.put('/:email', updateUser);
 
 export default router;
