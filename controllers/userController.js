@@ -43,31 +43,28 @@ export const registerUser = async (req, res) => {
 
 
 
-// Fonction de connexion de l'utilisateur
+// Connexion de l'utilisateur
 export const loginUser = async (req, res) => {
+  const { email, password } = req.body;
   try {
-    const { email, password } = req.body;
-
-    // Vérifier si l'utilisateur existe
     const user = await User.findOne({ email });
+
     if (!user) {
-      return res.status(400).json({ message: 'Email ou mot de passe invalide' });
+      return res.status(401).json({ message: 'Email ou mot de passe invalide' });
     }
 
-    // Comparer le mot de passe
     const isMatch = await compare(password, user.password);
+
     if (!isMatch) {
-      return res.status(400).json({ message: 'Email ou mot de passe invalide' });
+      return res.status(401).json({ message: 'Email ou mot de passe invalide' });
     }
 
-    // Retourner l'utilisateur
-    res.status(200).json(user);
+    res.status(200).json({ message: 'Connexion réussie', user });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: 'Erreur lors de la connexion de l\'utilisateur' });
+    res.status(500).json({ message: 'Erreur lors de la connexion' });
   }
 };
-
 
 
 // Connexion Google de l'utilisateur
@@ -102,21 +99,19 @@ export const googleSignIn = async (req, res) => {
 
 
 
-// Fonction pour obtenir un utilisateur par email
+// Récupérer les informations de l'utilisateur
 export const getUserByEmail = async (req, res) => {
+  const { email } = req.params;
   try {
-    const { email } = req.params;
-
-    // Trouver l'utilisateur par email
     const user = await User.findOne({ email });
+
     if (!user) {
       return res.status(404).json({ message: 'Utilisateur non trouvé' });
     }
 
-    // Retourner l'utilisateur
     res.status(200).json(user);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: 'Erreur lors de la récupération de l\'utilisateur' });
+    res.status(500).json({ message: 'Erreur lors de la récupération des informations de l\'utilisateur' });
   }
 };
